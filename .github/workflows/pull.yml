@@ -1,0 +1,49 @@
+name: Pull
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  NAME: "nestjs-app-template-b"
+  PORT: "3000:3000"
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    env:
+      UNIQUE: "${{ github.run_id }}-${{ github.run_attempt }}"
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build container image
+      run: docker build -t ${{ env.NAME }}-$UNIQUE:latest ./
+
+    - name: Save and compress Docker image
+      run: |
+        docker save -o ./${{ env.NAME }}-$UNIQUE.tar ${{ env.NAME }}-$UNIQUE:latest
+        gzip ./${{ env.NAME }}-$UNIQUE.tar
+
+    - name: Install SSH tool
+      run: sudo apt-get install -y sshpass
+
+    - name: Copy Docker image to server
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -o StrictHostKeyChecking=no ./${{ env.NAME }}-$UNIQUE.tar.gz ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/tmp/${{ env.NAME }}-$UNIQUE.tar.gz
+        rm -rf ./${{ env.NAME }}-$UNIQUE.tar.gz
+
+    - name: Connect and load Docker image
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << EOF
+          gunzip /tmp/${{ env.NAME }}-$UNIQUE.tar.gz
+          sudo docker load -i /tmp/${{ env.NAME }}-$UNIQUE.tar
+          sudo docker stop ${{ env.NAME }} || true
+          sudo docker rm ${{ env.NAME }} || true
+          sudo docker run -p ${{ env.PORT }} -d --restart unless-stopped --name ${{ env.NAME }} ${{ env.NAME }}-$UNIQUE:latest
+
+          rm -rf /tmp/${{ env.NAME }}-$UNIQUE.tar
+          sudo docker image prune -a --force
+        EOF
