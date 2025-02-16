@@ -18,7 +18,7 @@ async function bootstrap() {
 
   app.enableCors({
     allowedHeaders: ['content-type'],
-    origin: envService.appUrl,
+    origin: envService.envConfig.CORS_ALLOWED_URLS,
     credentials: true,
   });
 
