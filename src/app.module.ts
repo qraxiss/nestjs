@@ -2,7 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvService } from './env/env.service';
 import { EnvModule } from './env/env.module';
-
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -20,7 +23,17 @@ import { EnvModule } from './env/env.module';
       }),
       inject: [EnvService]
     }),
+    JwtModule.registerAsync({
+      useFactory: (envService: EnvService) => ({
+        secret: envService.envConfig.JWT_KEY,
+        signOptions: { expiresIn: '1h' },
+      }),
+      inject: [EnvService]
+    }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     EnvModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [EnvService],

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { validateSync } from 'class-validator';
+import { validateSync, ValidationError } from 'class-validator';
 import { config } from 'dotenv';
 import { ENV } from './env.dto';
 
@@ -11,12 +11,34 @@ export class EnvService {
     public readonly envConfig: ENV;
 
     constructor() {
-        const configInstance = plainToInstance(ENV, process.env, { enableImplicitConversion: true });
-        const errors = validateSync(configInstance, { skipMissingProperties: false });
+        const configInstance = plainToInstance(ENV, process.env, {
+            enableImplicitConversion: true
+        });
+
+        const errors = validateSync(configInstance, {
+            skipMissingProperties: false
+        });
+
         if (errors.length > 0) {
-            throw new Error('Config validation error');
+            throw new Error(
+                `⛔ Environment variables validation failed:\n${this.formatErrors(errors)}`
+            );
         }
+
         this.envConfig = configInstance;
+    }
+
+    private formatErrors(errors: ValidationError[]): string {
+        return errors
+            .map((error: ValidationError) => {
+                const constraints = error.constraints || {};
+                const messages = Object.values(constraints)
+                    .map((message: string) => `  • ${message}`)
+                    .join('\n');
+
+                return `➤ ${error.property}:\n${messages}`;
+            })
+            .join('\n\n');
     }
 
     get isDevelopment(): boolean {

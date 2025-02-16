@@ -37,4 +37,10 @@ export class ENV {
 
     @IsString()
     APP_PROTOCOL: string;
+
+    @IsString()
+    ADMIN_KEY: string;
+
+    @IsString()
+    JWT_KEY: string;
 }

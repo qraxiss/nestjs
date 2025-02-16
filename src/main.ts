@@ -18,12 +18,20 @@ async function bootstrap() {
 
   app.enableCors({
     allowedHeaders: ['content-type'],
-    origin: envService.apiUrl,
+    origin: envService.appUrl,
     credentials: true,
   });
 
   const config = new DocumentBuilder()
-    .addServer(envService.apiUrl)
+    .addServer(envService.appUrl)
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'JWT-auth',
+    )
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'AdminKey',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

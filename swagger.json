@@ -1,6 +1,221 @@
 {
   "openapi": "3.0.0",
-  "paths": {},
+  "paths": {
+    "/users": {
+      "post": {
+        "operationId": "UsersController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Kullanıcı başarıyla oluşturuldu"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "AdminKey": []
+          }
+        ],
+        "summary": "Yeni kullanıcı oluşturma (Admin gerektirir)",
+        "tags": [
+          "users"
+        ]
+      },
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Kullanıcı listesi"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "AdminKey": []
+          }
+        ],
+        "summary": "Tüm kullanıcıları listeleme (Admin gerektirir)",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Kullanıcı ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kullanıcı detayları"
+          },
+          "404": {
+            "description": "Kullanıcı bulunamadı"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "AdminKey": []
+          }
+        ],
+        "summary": "ID ile kullanıcı detaylarını getirme (Admin gerektirir)",
+        "tags": [
+          "users"
+        ]
+      },
+      "put": {
+        "operationId": "UsersController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Kullanıcı ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Kullanıcı başarıyla güncellendi"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "AdminKey": []
+          }
+        ],
+        "summary": "Kullanıcı bilgilerini güncelleme (Admin gerektirir)",
+        "tags": [
+          "users"
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Kullanıcı ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kullanıcı başarıyla silindi"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "AdminKey": []
+          }
+        ],
+        "summary": "Kullanıcı silme (Admin gerektirir)",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          }
+        },
+        "summary": "User login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/check": {
+      "get": {
+        "operationId": "AuthController_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IsUserLogged"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Check is user logged succesfully.",
+        "tags": [
+          "auth"
+        ]
+      }
+    }
+  },
   "info": {
     "title": "",
     "description": "",
@@ -10,10 +225,79 @@
   "tags": [],
   "servers": [
     {
-      "url": "https://qraxiss.com:3001/api"
+      "url": "http://localhost:3000/"
     }
   ],
   "components": {
-    "schemas": {}
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      },
+      "AdminKey": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "kullanici@ornek.com",
+            "description": "Kullanıcı email adresi"
+          },
+          "password": {
+            "type": "string",
+            "example": "Sifre123!",
+            "description": "Kullanıcı şifresi (min 6 karakter)",
+            "minLength": 6
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "User email address"
+          },
+          "password": {
+            "type": "string",
+            "example": "yourpassword",
+            "description": "User password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "IsUserLogged": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "Login status."
+          }
+        },
+        "required": [
+          "status"
+        ]
+      }
+    }
   }
 }
