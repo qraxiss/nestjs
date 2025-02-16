@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { AdminAuth } from 'src/auth/decorators/admin.decorator';
 import {
     ApiTags,
@@ -21,46 +21,46 @@ export class UsersController {
 
     @Post()
     @AdminAuth()
-    @ApiOperation({ summary: 'Yeni kullanıcı oluşturma (Admin gerektirir)' })
-    @ApiCreatedResponse({ description: 'Kullanıcı başarıyla oluşturuldu' })
-    @ApiBody({ type: CreateUserDto }) // 👈 Request body şeması
+    @ApiOperation({ summary: 'Create a new user (Admin required)' })
+    @ApiCreatedResponse({ description: 'User successfully created' })
+    @ApiBody({ type: CreateUserDto })
     create(@Body() createUserDto: CreateUserDto) {
         return this.usersService.create(createUserDto);
     }
 
     @Get()
     @AdminAuth()
-    @ApiOperation({ summary: 'Tüm kullanıcıları listeleme (Admin gerektirir)' })
-    @ApiResponse({ status: 200, description: 'Kullanıcı listesi' })
+    @ApiOperation({ summary: 'List all users (Admin required)' })
+    @ApiResponse({ status: 200, description: 'List of users' })
     findAll() {
         return this.usersService.findAll();
     }
 
     @Get(':id')
     @AdminAuth()
-    @ApiOperation({ summary: 'ID ile kullanıcı detaylarını getirme (Admin gerektirir)' })
-    @ApiParam({ name: 'id', description: 'Kullanıcı ID' }) // 👈 Parametre dokümantasyonu
-    @ApiResponse({ status: 200, description: 'Kullanıcı detayları' })
-    @ApiResponse({ status: 404, description: 'Kullanıcı bulunamadı' })
+    @ApiOperation({ summary: 'Get user details by ID (Admin required)' })
+    @ApiParam({ name: 'id', description: 'User ID' })
+    @ApiResponse({ status: 200, description: 'User details' })
+    @ApiResponse({ status: 404, description: 'User not found' })
     findOne(@Param('id') id: string) {
         return this.usersService.findOne(+id);
     }
 
     @Put(':id')
     @AdminAuth()
-    @ApiOperation({ summary: 'Kullanıcı bilgilerini güncelleme (Admin gerektirir)' })
-    @ApiParam({ name: 'id', description: 'Kullanıcı ID' })
-    @ApiBody({ type: UpdateUserDto }) // 👈 Güncelleme için body şeması
-    @ApiResponse({ status: 200, description: 'Kullanıcı başarıyla güncellendi' })
+    @ApiOperation({ summary: 'Update user details (Admin required)' })
+    @ApiParam({ name: 'id', description: 'User ID' })
+    @ApiBody({ type: UpdateUserDto })
+    @ApiResponse({ status: 200, description: 'User successfully updated' })
     update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.usersService.update(+id, updateUserDto);
     }
 
     @Delete(':id')
     @AdminAuth()
-    @ApiOperation({ summary: 'Kullanıcı silme (Admin gerektirir)' })
-    @ApiParam({ name: 'id', description: 'Kullanıcı ID' })
-    @ApiResponse({ status: 200, description: 'Kullanıcı başarıyla silindi' })
+    @ApiOperation({ summary: 'Delete user (Admin required)' })
+    @ApiParam({ name: 'id', description: 'User ID' })
+    @ApiResponse({ status: 200, description: 'User successfully deleted' })
     remove(@Param('id') id: string) {
         return this.usersService.remove(+id);
     }

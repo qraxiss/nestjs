@@ -17,7 +17,7 @@
         },
         "responses": {
           "201": {
-            "description": "Kullanıcı başarıyla oluşturuldu"
+            "description": "User successfully created"
           }
         },
         "security": [
@@ -28,7 +28,7 @@
             "AdminKey": []
           }
         ],
-        "summary": "Yeni kullanıcı oluşturma (Admin gerektirir)",
+        "summary": "Create a new user (Admin required)",
         "tags": [
           "users"
         ]
@@ -38,7 +38,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Kullanıcı listesi"
+            "description": "List of users"
           }
         },
         "security": [
@@ -49,7 +49,7 @@
             "AdminKey": []
           }
         ],
-        "summary": "Tüm kullanıcıları listeleme (Admin gerektirir)",
+        "summary": "List all users (Admin required)",
         "tags": [
           "users"
         ]
@@ -63,7 +63,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "Kullanıcı ID",
+            "description": "User ID",
             "schema": {
               "type": "string"
             }
@@ -71,10 +71,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Kullanıcı detayları"
+            "description": "User details"
           },
           "404": {
-            "description": "Kullanıcı bulunamadı"
+            "description": "User not found"
           }
         },
         "security": [
@@ -85,7 +85,7 @@
             "AdminKey": []
           }
         ],
-        "summary": "ID ile kullanıcı detaylarını getirme (Admin gerektirir)",
+        "summary": "Get user details by ID (Admin required)",
         "tags": [
           "users"
         ]
@@ -97,7 +97,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "Kullanıcı ID",
+            "description": "User ID",
             "schema": {
               "type": "string"
             }
@@ -115,7 +115,7 @@
         },
         "responses": {
           "200": {
-            "description": "Kullanıcı başarıyla güncellendi"
+            "description": "User successfully updated"
           }
         },
         "security": [
@@ -126,7 +126,7 @@
             "AdminKey": []
           }
         ],
-        "summary": "Kullanıcı bilgilerini güncelleme (Admin gerektirir)",
+        "summary": "Update user details (Admin required)",
         "tags": [
           "users"
         ]
@@ -138,7 +138,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "Kullanıcı ID",
+            "description": "User ID",
             "schema": {
               "type": "string"
             }
@@ -146,7 +146,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Kullanıcı başarıyla silindi"
+            "description": "User successfully deleted"
           }
         },
         "security": [
@@ -157,7 +157,7 @@
             "AdminKey": []
           }
         ],
-        "summary": "Kullanıcı silme (Admin gerektirir)",
+        "summary": "Delete user (Admin required)",
         "tags": [
           "users"
         ]
@@ -247,13 +247,13 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "kullanici@ornek.com",
-            "description": "Kullanıcı email adresi"
+            "example": "user@mail.com",
+            "description": "User email address."
           },
           "password": {
             "type": "string",
-            "example": "Sifre123!",
-            "description": "Kullanıcı şifresi (min 6 karakter)",
+            "example": "password123!",
+            "description": "User password (Min 6 char!)",
             "minLength": 6
           }
         },

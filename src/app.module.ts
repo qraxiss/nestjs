@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EnvService } from './env/env.service';
-import { EnvModule } from './env/env.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { EnvService } from 'src/env/env.service';
+import { EnvModule } from 'src/env/env.module';
+import { UsersModule } from 'src/users/users.module';
+import { AuthModule } from 'src/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 @Module({

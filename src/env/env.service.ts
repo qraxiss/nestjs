@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validateSync, ValidationError } from 'class-validator';
 import { config } from 'dotenv';
-import { ENV } from './env.dto';
+import { ENV } from 'src/env/env.dto';
 
 config();
 
