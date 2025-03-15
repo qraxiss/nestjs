@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LogEntity } from './log.entity';
 import { LogService } from './log.service';
 import { CorrelationService } from './correlation/correlation.service';
-import { CorrelationMiddleware } from './middleware/correlation.middleware';
+import { CorrelationMiddleware } from './correlation/middleware/correlation.middleware';
 import { CorrelationModule } from './correlation/correlation.module';
 
 @Global()

@@ -1,7 +1,7 @@
 // src/logging/middleware/correlation-id.middleware.ts
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { CorrelationService, asyncLocalStorage } from '../correlation/correlation.service';
+import { CorrelationService, asyncLocalStorage } from '../correlation.service';
 
 @Injectable()
 export class CorrelationMiddleware implements NestMiddleware {
