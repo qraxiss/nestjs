@@ -1,7 +1,7 @@
 import { Controller, Post, UseGuards, Request, Body, Get } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/guards/local.guard';
-import { LoginDto } from '../users/dto/login.dto';
+import { LoginDto } from '../user/dto/login.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { IsUserLogged } from 'src/auth/dto/check.dto';

@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from 'src/auth/auth.controller';
 import { AuthService } from 'src/auth/auth.service';
-import { UsersService } from 'src/users/users.service';
+import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { UsersModule } from 'src/users/users.module';
+import { UserModule } from 'src/user/user.module';
 import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 import { LocalStrategy } from 'src/auth/strategies/local.strategy';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, UsersService, JwtService, JwtStrategy, LocalStrategy],
-  imports: [UsersModule]
+  providers: [AuthService, UserService, JwtService, JwtStrategy, LocalStrategy],
+  imports: [UserModule, AdminModule]
 })
 export class AuthModule { }

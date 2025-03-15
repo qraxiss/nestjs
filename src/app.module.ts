@@ -2,10 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvService } from 'src/env/env.service';
 import { EnvModule } from 'src/env/env.module';
-import { UsersModule } from 'src/users/users.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { UserModule } from './user/user.module';
+import { SettingModule } from './setting/setting.module';
+import { ConstantModule } from './constant/constant.module';
+import { LogModule } from './log/log.module';
+import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -32,8 +36,12 @@ import { PassportModule } from '@nestjs/passport';
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     EnvModule,
-    UsersModule,
     AuthModule,
+    UserModule,
+    SettingModule,
+    ConstantModule,
+    LogModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [EnvService],
