@@ -12,7 +12,7 @@ import { JwtAuth } from 'src/auth/decorators/jwt.decorator';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    @UseGuards(LocalAuthGuard)
+    // @UseGuards(LocalAuthGuard)
     @Post('login')
     @ApiOperation({ summary: 'User login' })
     @ApiBody({ type: LoginDto })
@@ -22,6 +22,7 @@ export class AuthController {
 
     })
     async login(@Request() req, @Body() loginDto: LoginDto) {
+        console.log("selam;")
         return this.authService.login(req.user);
     }
 

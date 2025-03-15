@@ -1,11 +1,19 @@
-import { Module } from '@nestjs/common';
+import { Module, Global, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { LogEntity } from './log.entity';
 import { LogService } from './log.service';
-import { LogController } from './log.controller';
-import { ErrorModule } from './error/error.module';
+import { CorrelationService } from './correlation/correlation.service';
+import { CorrelationMiddleware } from './middleware/correlation.middleware';
+import { CorrelationModule } from './correlation/correlation.module';
 
+@Global()
 @Module({
-  providers: [LogService],
-  controllers: [LogController],
-  imports: [ErrorModule]
+  imports: [TypeOrmModule.forFeature([LogEntity]), CorrelationModule],
+  providers: [LogService, CorrelationService],
+  exports: [LogService, CorrelationService],
 })
-export class LogModule {}
+export class LogModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorrelationMiddleware).forRoutes('*');
+  }
+}
