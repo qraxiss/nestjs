@@ -6,11 +6,13 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { IsUserLogged } from 'src/auth/dto/check.dto';
 import { JwtAuth } from 'src/auth/decorators/jwt.decorator';
+import { LogService } from 'src/log/log.service';
+import { LogMethod } from 'src/log/decorator/log.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private logService: LogService) { }
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
@@ -19,12 +21,10 @@ export class AuthController {
     @ApiResponse({
         status: 200,
         description: 'Login successful',
-
     })
     async login(@Request() req, @Body() loginDto: LoginDto) {
         return this.authService.login(req.user);
     }
-
 
     @JwtAuth()
     @Get('check')
@@ -34,6 +34,7 @@ export class AuthController {
         description: 'Login successful',
         type: IsUserLogged
     })
+    @LogMethod()
     async check(@Request() req) {
         return {
             status: !!req.user
