@@ -3,7 +3,7 @@
   "paths": {
     "/auth/login": {
       "post": {
-        "operationId": "AuthController_login",
+        "operationId": "AuthController_",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -17,7 +17,14 @@
         },
         "responses": {
           "200": {
-            "description": "Login successful"
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDto"
+                }
+              }
+            }
           }
         },
         "summary": "User login",
@@ -36,7 +43,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IsUserLogged"
+                  "$ref": "#/components/schemas/IsUserLoggedResponseDto"
                 }
               }
             }
@@ -55,7 +62,7 @@
     },
     "/users": {
       "post": {
-        "operationId": "UserController_create",
+        "operationId": "UserController_",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -68,8 +75,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "User successfully created"
+          "default": {
+            "description": "User successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -80,7 +94,6 @@
             "AdminKey": []
           }
         ],
-        "summary": "Create a new user (Admin required)",
         "tags": [
           "users"
         ]
@@ -247,18 +260,41 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "user@example.com",
+            "example": "user@mail.com",
             "description": "User email address"
           },
           "password": {
             "type": "string",
-            "example": "yourpassword",
+            "example": "password123!",
             "description": "User password"
           }
         },
         "required": [
           "email",
           "password"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginDto"
+          }
+        },
+        "required": [
+          "status",
+          "errorCode",
+          "message",
+          "data"
         ]
       },
       "IsUserLogged": {
@@ -272,6 +308,29 @@
         },
         "required": [
           "status"
+        ]
+      },
+      "IsUserLoggedResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IsUserLogged"
+          }
+        },
+        "required": [
+          "status",
+          "errorCode",
+          "message",
+          "data"
         ]
       },
       "CreateUserDto": {
@@ -292,6 +351,29 @@
         "required": [
           "email",
           "password"
+        ]
+      },
+      "CreateUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateUserDto"
+          }
+        },
+        "required": [
+          "status",
+          "errorCode",
+          "message",
+          "data"
         ]
       },
       "UpdateUserDto": {

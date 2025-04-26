@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean } from 'class-validator';
+import { IsBoolean, IsObject, IsOptional } from 'class-validator';
+
+import { ResponseDto } from 'src/error/response.dto';
 
 export class IsUserLogged {
     @ApiProperty({
@@ -8,5 +10,11 @@ export class IsUserLogged {
     })
     @IsBoolean()
     status: boolean;
+}
 
+export class IsUserLoggedResponseDto extends ResponseDto {
+    @ApiProperty({ type: IsUserLogged })
+    @IsObject()
+    @IsOptional()
+    data: IsUserLogged
 }

@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { SettingModule } from './setting/setting.module';
 import { ConstantModule } from './constant/constant.module';
 import { LogModule } from './log/log.module';
+import { ErrorModule } from './error/error.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -40,6 +41,7 @@ import { LogModule } from './log/log.module';
     SettingModule,
     ConstantModule,
     LogModule,
+    ErrorModule,
   ],
   controllers: [],
   providers: [EnvService],

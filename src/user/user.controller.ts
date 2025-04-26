@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto, CreateUserResponseDto } from 'src/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 import { AdminAuth } from 'src/auth/decorators/admin.decorator';
 import {
@@ -12,6 +12,7 @@ import {
     ApiParam,
     ApiCreatedResponse,
 } from '@nestjs/swagger';
+import { CatchError } from 'src/error/catch-error.decorator';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -21,9 +22,9 @@ export class UserController {
 
     @Post()
     @AdminAuth()
-    @ApiOperation({ summary: 'Create a new user (Admin required)' })
-    @ApiCreatedResponse({ description: 'User successfully created' })
+    @ApiResponse({ description: 'User successfully created', type: CreateUserResponseDto })
     @ApiBody({ type: CreateUserDto })
+    @CatchError()
     create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }
