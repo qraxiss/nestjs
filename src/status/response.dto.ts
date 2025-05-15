@@ -1,6 +1,7 @@
 // src/error/response.interface.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
+import { LocalError } from './errors';
 
 export class ErrorDto {
     @ApiProperty({ type: String })
@@ -12,6 +13,12 @@ export class ErrorDto {
     @IsString()
     @IsOptional()
     name: string
+
+
+    @ApiProperty({ type: String })
+    @IsString()
+    @IsOptional()
+    stack: string
 }
 
 export class ResponseDto {
@@ -27,7 +34,7 @@ export class ResponseDto {
     @ApiProperty({ type: ErrorDto })
     @IsObject()
     @IsOptional()
-    error: any | null | undefined;
+    error: LocalError | null | undefined;
 }
 
 

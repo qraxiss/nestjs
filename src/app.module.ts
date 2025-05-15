@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ConstantModule } from './constant/constant.module';
 import { StatusModule } from './status/status.module';
 import { ConstantService } from './constant/constant.service';
+import { LogsModule } from './logs/logs.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -34,6 +35,7 @@ import { ConstantService } from './constant/constant.service';
     AuthModule,
     ConstantModule,
     StatusModule,
+    LogsModule,
   ],
   controllers: [],
   providers: [ConstantService],
