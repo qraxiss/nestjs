@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConstantService } from './constant.service';
 
 @Module({
-  providers: [ConstantService]
+  providers: [ConstantService],
+  exports: [ConstantService]
 })
-export class ConstantModule {}
+@Global()
+export class ConstantModule { }

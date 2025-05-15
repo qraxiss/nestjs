@@ -1,17 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
-import { EnvService } from 'src/env/env.service';
+import { ConstantService } from 'src/constant/constant.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private jwtService: JwtService,
-        private envService: EnvService,
+        private constantsService: ConstantService
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> {
-        const user = UserService.USERS.find(user => user.email === email);
+        const user = this.constantsService.CONSTANTS.USERS.find(user => user.email === email);
         if (user && user.password === pass) {
             return user;
         }
@@ -22,7 +21,7 @@ export class AuthService {
         const payload = { email: user.email, sub: user.email };
         return {
             access_token: this.jwtService.sign(payload, {
-                secret: this.envService.envConfig.JWT_KEY
+                secret: this.constantsService.CONSTANTS.JWT_KEY
             }),
         };
     }

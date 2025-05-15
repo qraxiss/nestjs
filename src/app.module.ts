@@ -1,49 +1,43 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EnvService } from 'src/env/env.service';
-import { EnvModule } from 'src/env/env.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UserModule } from './user/user.module';
-import { SettingModule } from './setting/setting.module';
 import { ConstantModule } from './constant/constant.module';
 import { StatusModule } from './status/status.module';
+import { ConstantService } from './constant/constant.service';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useFactory: (envService: EnvService) => ({
+      useFactory: (constantsService: ConstantService) => ({
         type: 'mysql',
-        host: envService.envConfig.DATABASE_HOST,
-        port: envService.envConfig.DATABASE_PORT,
-        username: envService.envConfig.DATABASE_USERNAME,
-        password: envService.envConfig.DATABASE_PASSWORD,
-        database: envService.envConfig.DATABASE_NAME,
+        host: constantsService.CONSTANTS.DATABASE.HOST,
+        port: constantsService.CONSTANTS.DATABASE.PORT,
+        username: constantsService.CONSTANTS.DATABASE.USERNAME,
+        password: constantsService.CONSTANTS.DATABASE.PASSWORD,
+        database: constantsService.CONSTANTS.DATABASE.NAME,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: envService.isDevelopment,
+        synchronize: constantsService.isDevelopment,
         autoLoadEntities: true,
         migrationsTransactionMode: "each"
       }),
-      inject: [EnvService]
+      inject: [ConstantService]
     }),
     JwtModule.registerAsync({
-      useFactory: (envService: EnvService) => ({
-        secret: envService.envConfig.JWT_KEY,
+      useFactory: (constantService: ConstantService) => ({
+        secret: constantService.CONSTANTS.JWT_KEY,
         signOptions: { expiresIn: '1h' },
       }),
-      inject: [EnvService]
+      inject: [ConstantService]
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    EnvModule,
     AuthModule,
-    UserModule,
-    SettingModule,
     ConstantModule,
     StatusModule,
   ],
   controllers: [],
-  providers: [EnvService],
+  providers: [ConstantService],
 })
 export class AppModule {
-  constructor(private envService: EnvService) { }
+  constructor() { }
 }
