@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsObject, IsOptional, IsString, MinLength } from 'class-validator';
-import { ResponseDto } from 'src/error/response.dto';
 
 export class CreateUserDto {
     @ApiProperty({
@@ -23,7 +22,7 @@ export class CreateUserDto {
 }
 
 
-export class CreateUserResponseDto extends ResponseDto {
+export class CreateUserResponseDto {
     @ApiProperty({ type: CreateUserDto })
     @IsObject()
     @IsOptional()

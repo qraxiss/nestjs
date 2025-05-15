@@ -10,9 +10,7 @@ import {
     ApiBody,
     ApiBearerAuth,
     ApiParam,
-    ApiCreatedResponse,
 } from '@nestjs/swagger';
-import { CatchError } from 'src/error/catch-error.decorator';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -24,7 +22,6 @@ export class UserController {
     @AdminAuth()
     @ApiResponse({ description: 'User successfully created', type: CreateUserResponseDto })
     @ApiBody({ type: CreateUserDto })
-    @CatchError()
     create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }
@@ -42,7 +39,6 @@ export class UserController {
     @ApiOperation({ summary: 'Get user details by ID (Admin required)' })
     @ApiParam({ name: 'id', description: 'User ID' })
     @ApiResponse({ status: 200, description: 'User details' })
-    @ApiResponse({ status: 404, description: 'User not found' })
     findOne(@Param('id') id: string) {
         return this.userService.findOne(+id);
     }

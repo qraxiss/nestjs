@@ -8,8 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from './user/user.module';
 import { SettingModule } from './setting/setting.module';
 import { ConstantModule } from './constant/constant.module';
-import { LogModule } from './log/log.module';
-import { ErrorModule } from './error/error.module';
+import { StatusModule } from './status/status.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -40,8 +39,7 @@ import { ErrorModule } from './error/error.module';
     UserModule,
     SettingModule,
     ConstantModule,
-    LogModule,
-    ErrorModule,
+    StatusModule,
   ],
   controllers: [],
   providers: [EnvService],

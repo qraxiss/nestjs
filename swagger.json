@@ -3,7 +3,7 @@
   "paths": {
     "/auth/login": {
       "post": {
-        "operationId": "AuthController_",
+        "operationId": "AuthController_login",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -35,18 +35,11 @@
     },
     "/auth/check": {
       "get": {
-        "operationId": "AuthController_",
+        "operationId": "AuthController_check",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Login successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IsUserLoggedResponseDto"
-                }
-              }
-            }
+            "description": "Login successful"
           }
         },
         "security": [
@@ -62,7 +55,7 @@
     },
     "/users": {
       "post": {
-        "operationId": "UserController_",
+        "operationId": "UserController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -137,9 +130,6 @@
         "responses": {
           "200": {
             "description": "User details"
-          },
-          "404": {
-            "description": "User not found"
           }
         },
         "security": [
@@ -277,59 +267,11 @@
       "LoginResponseDto": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "boolean"
-          },
-          "errorCode": {
-            "type": "object"
-          },
-          "message": {
-            "type": "string"
-          },
           "data": {
             "$ref": "#/components/schemas/LoginDto"
           }
         },
         "required": [
-          "status",
-          "errorCode",
-          "message",
-          "data"
-        ]
-      },
-      "IsUserLogged": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "boolean",
-            "example": true,
-            "description": "Login status."
-          }
-        },
-        "required": [
-          "status"
-        ]
-      },
-      "IsUserLoggedResponseDto": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "boolean"
-          },
-          "errorCode": {
-            "type": "object"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/IsUserLogged"
-          }
-        },
-        "required": [
-          "status",
-          "errorCode",
-          "message",
           "data"
         ]
       },
@@ -356,23 +298,11 @@
       "CreateUserResponseDto": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "boolean"
-          },
-          "errorCode": {
-            "type": "object"
-          },
-          "message": {
-            "type": "string"
-          },
           "data": {
             "$ref": "#/components/schemas/CreateUserDto"
           }
         },
         "required": [
-          "status",
-          "errorCode",
-          "message",
           "data"
         ]
       },
