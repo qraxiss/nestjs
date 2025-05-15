@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { writeFileSync } from 'fs';
 import { ConstantService } from './constant/constant.service';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const constantService = app.get(ConstantService);

@@ -10,14 +10,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginDto"
+                "$ref": "#/components/schemas/UserDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Login successful",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -27,7 +27,6 @@
             }
           }
         },
-        "summary": "User login",
         "tags": [
           "auth"
         ]
@@ -35,11 +34,18 @@
     },
     "/auth/check": {
       "get": {
-        "operationId": "AuthController_check",
+        "operationId": "AuthController_",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Login successful"
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IsUserLoggedResponseDto"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -47,7 +53,6 @@
             "JWT-auth": []
           }
         ],
-        "summary": "Check is user logged succesfully.",
         "tags": [
           "auth"
         ]
@@ -80,18 +85,16 @@
       }
     },
     "schemas": {
-      "LoginDto": {
+      "UserDto": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "example": "user@mail.com",
-            "description": "User email address"
+            "example": "user@mail.com"
           },
           "password": {
             "type": "string",
-            "example": "password123!",
-            "description": "User password"
+            "example": "password123!"
           }
         },
         "required": [
@@ -99,15 +102,79 @@
           "password"
         ]
       },
-      "LoginResponseDto": {
+      "LoginDto": {
         "type": "object",
         "properties": {
-          "data": {
-            "$ref": "#/components/schemas/LoginDto"
+          "access_token": {
+            "type": "string"
           }
         },
         "required": [
-          "data"
+          "access_token"
+        ]
+      },
+      "ErrorDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "name"
+        ]
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginDto"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDto"
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "error"
+        ]
+      },
+      "IsUserLoggedDto": {
+        "type": "object",
+        "properties": {
+          "logged": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "logged"
+        ]
+      },
+      "IsUserLoggedResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IsUserLoggedDto"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDto"
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "error"
         ]
       }
     }

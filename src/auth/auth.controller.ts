@@ -1,9 +1,10 @@
 import { Controller, Post, UseGuards, Request, Body, Get } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/guards/local.guard';
-import { LoginDto, LoginResponseDto } from './dto/login.dto';
+import { UserDto, IsUserLoggedResponseDto, LoginDto, LoginResponseDto } from './auth.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuth } from 'src/auth/decorators/jwt.decorator';
+import { JwtAuth } from 'src/auth/auth.decorator';
+import { StatusDecorator } from 'src/status/status.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -12,27 +13,25 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    @ApiOperation({ summary: 'User login' })
-    @ApiBody({ type: LoginDto })
+    @ApiBody({ type: UserDto })
     @ApiResponse({
         status: 200,
-        description: 'Login successful',
         type: LoginResponseDto
     })
-    async login(@Request() req, @Body() loginDto: LoginDto) {
+    async login(@Request() req) {
         return this.authService.login(req.user);
     }
 
     @JwtAuth()
     @Get('check')
-    @ApiOperation({ summary: 'Check is user logged succesfully.' })
     @ApiResponse({
         status: 200,
-        description: 'Login successful',
+        type: IsUserLoggedResponseDto
     })
+    @StatusDecorator()
     async check(@Request() req) {
         return {
-            status: !!req.user
+            logged: !!req.user
         }
     }
 }
