@@ -14,6 +14,12 @@ export class NotFoundError extends LocalError {
     }
 }
 
+export class WrongPassword extends LocalError {
+    constructor(message?: string) {
+        super(message)
+    }
+}
+
 export class TestError extends LocalError {
     constructor(message?: string) {
         super(message)

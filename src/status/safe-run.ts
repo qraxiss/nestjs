@@ -2,14 +2,19 @@ import { LocalError } from './errors';
 import { StatusType } from './status.type';
 import { Logger } from '@nestjs/common';
 
-export async function safeRun<T>(promise: Promise<T>, resource?: string, successMessage?: (result: T) => string): Promise<StatusType<T>> {
+export async function safeRun<T>(
+    promise: Promise<T>,
+    resource?: string,
+    successMessage?: (result: T) => string
+): Promise<StatusType<T>> {
+    const startTime = Date.now();
     try {
         const result = await promise;
+        const executionTime = Date.now() - startTime;
 
         if (successMessage) {
-            Logger.log(successMessage(result), resource || "safeRun")
+            Logger.log(`${successMessage(result)} +${executionTime}ms`, resource || "safeRun")
         }
-
         return {
             success: true,
             data: result,
@@ -35,7 +40,7 @@ export async function safeRun<T>(promise: Promise<T>, resource?: string, success
     }
 }
 
-export function StatusDecorator<T>(resource?: string, successMessage?: (result: T) => string) {
+export function SafeRun<T>(resource?: string, successMessage?: (result: T) => string) {
     return function (
         target: any,
         propertyKey: string,
@@ -44,11 +49,9 @@ export function StatusDecorator<T>(resource?: string, successMessage?: (result: 
         const originalMethod = descriptor.value;
 
         descriptor.value = async function (...args: any[]): Promise<StatusType<T>> {
-            const promise = await originalMethod.apply(this, args);
-            return await safeRun<T>(promise, resource, successMessage)
+            return await safeRun(await originalMethod.apply(this, args), resource, successMessage);
         };
 
         return descriptor;
     };
 }
-
